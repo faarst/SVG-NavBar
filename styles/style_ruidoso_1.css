@@ -1,0 +1,139 @@
+
+
+/* RUIDOSO STYLE */
+
+
+#divNavBar {
+
+    text-align: right;
+    overflow: hidden;
+
+}
+
+#divControls { 
+
+    display: none; 
+
+}
+
+#divMain {
+
+    width:100%;
+    position: relative;
+
+}
+
+#iframeMain {
+
+/*     display: block; */
+    width: 100%;
+    height: 100%;
+    border: 0;
+    position: absolute;
+
+}
+
+#svgBackground {
+    
+    fill: #F6E8B0; 
+    
+}
+
+body {
+    
+    font-family: "Lucida Console", "Courier New", monospace;
+    color: #AC0303;
+    background-color: #F6E8B0; 
+    
+}
+
+h1 {
+    
+    
+}
+
+p {
+    
+    
+}
+
+path {
+    
+    fill: none;
+    
+}
+
+.sMain {
+
+    fill: none;
+
+}
+
+
+.s0.sMain { stroke: #F0C206; }
+
+.s1.sMain { stroke: #AC0303; }
+
+.s2.sMain { stroke: #05ACA0; }
+
+.s3.sMain { stroke: #FCFA28; }
+
+.s4.sMain { stroke: #49FCF8; }
+
+
+.sOutline {
+
+    fill: none;
+    stroke-width: 13;
+    stroke: #F6E8B0;    
+
+}
+
+.sMain.sActive {
+    
+    stroke-width: 5;
+/*    -webkit-transition: stroke-width 300ms;
+    -moz-transition: stroke-width 300ms;
+    -o-transition: stroke-width 300ms;
+    transition: stroke-width 300ms;*/
+    
+}
+
+.sMain.sPassive {
+    
+    stroke-width: 2;
+/*    -webkit-transition: stroke-width 300ms;
+    -moz-transition: stroke-width 300ms;
+    -o-transition: stroke-width 300ms;
+    transition: stroke-width 300ms;*/
+    
+}
+
+.bActive {
+    
+    font-family: "Lucida Console", "Courier New", monospace;
+    fill: black;
+    cursor: pointer;
+    font-size: 100%;
+    font-weight: bold;
+
+}
+
+.bPassive {
+
+    font-family: "Lucida Console", "Courier New", monospace;
+    fill: gray;
+    cursor: pointer;
+    font-size: 100%;
+
+}
+
+.bPassive:hover {
+
+    fill: black;
+
+}
+
+
+
+        

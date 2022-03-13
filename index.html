@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+
+
+<!--      
+
+2016-03-12:
+
+This one works OK in chrome.  If you add twists too fast, it will mess up.
+In Firefox, the first twist doesn't animate, but all the following ones do.
+Seems OK in opera, too.
+
+-->
+
+
+<html>
+
+    <head>
+    
+        <title>Braiding Menu Demo</title>
+        
+        <link id="theCSS" rel="stylesheet" type="text/css" href="style.css">
+        
+    </head>
+    
+    <body onload="loadNavBar()" onresize="resetDivMain()">
+
+        <div id="divNavBar">
+            
+            <svg id="svgFull"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            
+                <rect id="svgBackground"/> 
+                
+                <g id="buttonText">
+                </g>
+                
+            </svg>
+            
+        </div>
+
+        <div id="divMainContainer">
+        
+            <div id="divMain">
+            
+                <div id="content0" class="contentDiv">
+                    
+                    <!-- <img id="im0" src="im/frontpage.jpg" alt="image missing" class="imageRight"> -->
+                    
+                    <h1>Greetings</h1>
+                    
+    <!--                 <img src="im/magpie1.jpg" alt="image missing" class="imageRight"> -->
+                    
+                    <p>
+                        This is a demo of some JavaScript in the navigation bar.  Clicking on menu options should braid those lines up there. <br> <br> <br>
+
+                        Some caveats as of 2016-03-12: <br> <br>
+
+                        This one works OK in chrome. <br>
+                        If you add twists too fast, it will mess up.  <br>
+                        In Firefox, the first twist doesn't animate, but all the following ones do. <br>
+                        Seems OK in opera, too.
+                    </p>
+                    
+<!--                    <p class="smallNote">
+                        * If you are viewing this page on Internet Explorer and it doesn't seem quite right, please click <a onclick="toggleScroll()">here</a>.
+                    </p>-->
+                    
+                    <div id="divControls" style="background-color: none">
+                    
+                        <h2>
+                            test test
+                        </h2>
+                        
+                        <p>
+                            other styles: 
+                            <a onclick='theCSS.setAttribute("href","styles/style-windowA.css")'>A</a>
+                            <a onclick='theCSS.setAttribute("href","styles/style-windowB.css")'>B</a>
+                            <a onclick='theCSS.setAttribute("href","styles/style-windowC.css")'>C</a>
+                            <a onclick='theCSS.setAttribute("href","styles/style-windowD.css")'>D</a>
+                            <a onclick='theCSS.setAttribute("href","styles/style-windowE.css")'>E</a>
+                            <a onclick='theCSS.setAttribute("href","styles/style-windowF.css")'>F</a>
+    <!--                        <a onclick='theCSS.setAttribute("href","styles/style_ruidoso.css")'>R</a>
+                            <a onclick='theCSS.setAttribute("href","styles/style_ruidoso_0.css")'>R0</a>
+                            <a onclick='theCSS.setAttribute("href","styles/style_ruidoso_1.css")'>R1</a>-->
+                        </p>
+                        
+                        <p>
+                            view content in <a id="scrollOrNot" onclick="toggleScroll()">single scroll display</a>.
+                        </p>
+                    
+                    </div>
+                
+                </div>
+                
+                <div id="content1" class="contentDiv">
+
+                    <h1>Research</h1>
+                    
+                    <p>
+                        (A description of my research was here.)
+                    </p>
+                    
+                </div>
+                
+                <div id="content2" class="contentDiv">
+                    
+                    <h1>Teaching</h1>
+                    
+    <!--                 <img src="im/feeny.gif" alt="image missing" class="imageRight"> -->
+
+                    <p>
+                        (Content related to my teaching was here.)
+                    </p>
+
+                </div>
+                
+                <div id="content3" class="contentDiv">
+                    
+                    <!-- <img id="im3" src="im/skyvault2.jpg" alt="image missing" class="imageRight"> -->
+                    
+                    <h1>Personal</h1>
+                    
+    <!--                 <img src="im/skyvault2.jpg" alt="image missing" class="imageRight"> -->
+                    
+                    <p>
+                        (Some further info was here.)
+                    </p>
+                                
+                </div>
+            
+            </div>
+        
+        </div>
+
+        <footer>
+            <p>Copyright &copy 2016 Forrest Gordon.</p>
+        </footer>
+        
+        <script>
+
+        </script>
+        
+        <!--
+            FakeSmile script here from https://leunen.me/fakesmile/
+        -->
+        <script type="text/ecmascript" src="smil.user.js"></script>
+        
+        <script>
+            
+            // GLOBAL VARIABLES: machinery
+            
+            keyboardOn = false;
+            colorSwap = false;
+            singleScroll = false;
+            showControls = false;
+            overStrand = "";
+            underStrand = "";
+            strandColors = ["#71455f","#ec513b","gray","#d3709a","#f89c3a"];
+            
+            // GLOBAL VARIABLES: inputs
+            
+            websiteInput = {
+                
+                buttonLabels : ["Home","Research","Teaching","Personal"],
+                grX : 60,
+                grY : 30,
+                bX : 40,
+                howManyT : 6,
+                dur : 400,
+                
+                // done with CSS now:
+                
+//                 colorBackground : "#F6E8B0",
+//                 colorsMain : ["red","blue","green","orange","purple"],
+//                 colorsOutline : ["#F6E8B0"],
+//                 opacityOutline : [0.5],
+//                 strokeWidthMain : 4,
+//                 strokeWidthOutline : 10, 
+//                 bFontFamily : "Lucida Console",
+//                 bFontSize : "20",
+                
+            };
+            
+            alphabetInput = {
+            
+                buttonLabels : "abcdefghijklmnopqrstuvwxyz".split(""),
+                buttonPages : "",
+                grX : 60,
+                grY : 24,
+                bX : 40,
+                howManyT : 6,
+                dur : 500,
+                
+                // done with CSS now:
+//                 colorBackground : "white",
+//                 colorsMain : ["red","blue","green","orange","purple"],
+//                 colorsOutline : ["white"],
+//                 opacityOutline : [0.5],
+//                 strokeWidthMain : 3,
+//                 strokeWidthOutline : 12, 
+//                 bFontFamily : "Courier",
+//                 bFontSize : "16",
+            
+            };
+            
+            function useInput (theInput) {
+                
+                theInput = theInput || websiteInput;
+                
+                buttonLabels = theInput.buttonLabels;
+                //buttonPages = theInput.buttonPages;
+                grX = theInput.grX;
+                grY = theInput.grY;
+                y0 = (theInput.grY)/2;
+                bX = theInput.bX;
+                howManyT = theInput.howManyT;
+                dur = theInput.dur;
+                
+                // done with CSS now:
+                
+                //colorBackground = theInput.colorBackground;
+                //colorsMain = theInput.colorsMain;
+                //colorsOutline = theInput.colorsOutline;
+                //opacityOutline = theInput.opacityOutline;
+                //strokeWidthMain = theInput.strokeWidthMain;
+                //strokeWidthOutline = theInput.strokeWidthOutline;
+                //bFontFamily = theInput.bFontFamily;
+                //bFontSize = theInput.bFontSize;            
+                
+            }
+            
+            function getStrandColors () {
+                
+                im0.style.border = "solid "+colors[Number(act0)];
+                
+//                 WRITE THIS LATER, MAYBE:
+//                 read strand colors from stylesheet, save them in strandColors = [ ... ]
+//                 for now, just copied them manually
+                
+            }
+            
+            function prepStuff () {
+                
+                // height of first strand (half of vert gap between strands)
+                y0 = grY/2;
+                
+                // update based on width of browser window (will not work in IE probably)
+//                 howManyT = Math.ceil(window.innerWidth/grX)+1;
+//                 vbOffset = (howManyT*grX)-window.innerWidth-20;
+                
+//                 // update based on width of _screen_ (lazy fix to avoid empty space on left if window enlarged)
+                howManyT = Math.ceil(screen.width/grX)+1;
+                vbOffset = (howManyT*grX)-screen.width-20;
+                
+                    // ***** PROBABLY NEED SOME FINE TUNING OF vbOffset HERE
+            
+                // nav bar height and width
+                yNB = (grY*(buttonLabels.length+1));
+                xNB = grX*howManyT;
+                
+                // prep the navbar svg
+                svgFull.setAttribute("width",xNB);
+                svgFull.setAttribute("height",yNB);
+                svgFull.setAttribute("viewBox",vbOffset+" 0 "+xNB+" "+yNB);
+                svgFull.setAttribute("preserveAspectRatio","xMaxYMid slice");
+                
+                // prep the background
+                svgBackground.setAttribute("width",xNB);
+                svgBackground.setAttribute("height",yNB);
+                svgBackground.setAttribute("x",vbOffset);
+
+                // prep the button group
+                buttonText.setAttribute("text-anchor","middle");
+                
+                if (singleScroll==false) {
+                    // also make only the first content div visible:
+                    showDiv("content0");
+                    for (i=1; i<buttonLabels.length; i++) {hideDiv("content"+i)};
+                }
+                
+            }
+            
+            function makeTrivTwist (xStart) {
+                
+                newGp = document.createElementNS("http://www.w3.org/2000/svg","g");
+                newGp.setAttribute("class","twistGp");
+                
+                x = xStart;
+                
+                for (i=0; i<buttonLabels.length+1; i++) {
+                        
+                    y = y0+i*grY;
+                    
+                    // make the backing path (for outline)
+                    
+                    newPath = document.createElementNS("http://www.w3.org/2000/svg","path");
+                    newPath.setAttribute("class","s"+i+" sOutline sPassive");
+                    //newPath.setAttribute("stroke",colorsOutline[i%colorsOutline.length]); // do this with CSS now
+                    //newPath.setAttribute("stroke-width",strokeWidthOutline);
+                    newPath.setAttribute("d","M "+x+","+y+" L "+(x+grX)+","+y);
+                    newGp.appendChild(newPath);
+                    
+                    // make the main path
+                    
+                    newPath = document.createElementNS("http://www.w3.org/2000/svg","path");
+                    newPath.setAttribute("class","s"+i+" sMain sPassive");
+                    //newPath.setAttribute("stroke",colorsMain[i%colorsMain.length]);
+                    //newPath.setAttribute("stroke-width",strokeWidthMain);
+                    newPath.setAttribute("d","M "+x+","+y+" L "+(x+grX)+","+y);
+                    newGp.appendChild(newPath);
+                }
+                    
+                svgFull.appendChild(newGp);
+                
+            }
+            
+            // start with K trivial twists
+            function makeTrivBraid (K) {
+            
+                for (j=0; j<K; j++) {
+                    
+                    makeTrivTwist(j*grX);
+                
+                }
+            
+            }
+            
+            // Make the buttons
+            function makeButtonText () {
+                
+                x = (howManyT-2)*grX;   // x-value for center of text
+                
+                for (i=0; i<buttonLabels.length; i++) {
+                    
+                    y = (i+1)*grY+y0/2-3;          // PROBABLY NEEDS SOME FINE TUNING
+                    
+                    // make the backing path (for outline)
+                    
+                    newText = document.createElementNS("http://www.w3.org/2000/svg","text");
+                    newText.setAttribute("id","bText"+i);
+                    newText.setAttribute("class","bPassive");
+                    newText.setAttribute("x",x);
+                    newText.setAttribute("y",y);
+                    newText.appendChild(document.createTextNode(buttonLabels[i]));
+                    
+                    // add the text element to the group
+                    buttonText.appendChild(newText);
+                
+                }
+                
+                // make the first button label the active one by default
+                
+                document.getElementById("bText0").setAttribute("class","bActive");
+                
+            }
+            
+            function loadNavBar () {
+                
+                useInput(websiteInput);
+                prepStuff();
+                makeTrivBraid(howManyT+1);
+                makeButtonText();
+                
+                resetDivMain();
+                
+                // lazy update: on load, have only the two strands adjacent to "Home" active
+                
+                y = document.getElementsByClassName("s0 sMain");
+                for (i=0; i<y.length; i++) {
+                    y[i].setAttribute("class","s0 sMain sActive")
+                }
+                
+                y = document.getElementsByClassName("s1 sMain");
+                for (i=0; i<y.length; i++) {
+                    y[i].setAttribute("class","s1 sMain sActive")
+                }
+                
+                y = document.getElementsByClassName("s0 sOutline");
+                for (i=0; i<y.length; i++) {
+                    y[i].setAttribute("class","s0 sOutline sActive")
+                }
+                
+                y = document.getElementsByClassName("s1 sOutline");
+                for (i=0; i<y.length; i++) {
+                    y[i].setAttribute("class","s1 sOutline sActive")
+                }
+                
+            }
+            
+            // Locate the first x and y points on an arc
+            function firstPoint (pathElement) {
+            
+                dSplit = pathElement.getAttribute("d").replace(/,/g," ").split(" ");
+                X = dSplit[1];
+                Y = dSplit[2];
+                firstPt = [X,Y];
+                return firstPt;
+                
+            }
+            
+            // Locate the last x and y points on an arc
+            function lastPoint (pathElement) {7
+                
+                dSplit = pathElement.getAttribute("d").replace(/,/g," ").split(" ");
+                X = dSplit[dSplit.length-2];
+                Y = dSplit[dSplit.length-1];
+                lastPt = [X,Y];
+                return lastPt;
+                
+            }
+            
+            // add labels for the animation
+            function markEm () {
+                
+                if (svgFull.getElementById("g5")) {
+                    unMarkEm();
+                }
+                
+                // don't use for loop here, some kind of timing problem
+                
+                twistGroups = svgFull.getElementsByClassName("twistGp");
+                g1 = twistGroups[twistGroups.length-1];
+                g2 = twistGroups[twistGroups.length-2];
+                g3 = twistGroups[twistGroups.length-3];
+                g4 = twistGroups[twistGroups.length-4];
+                g5 = twistGroups[twistGroups.length-5];
+                g1Paths = g1.getElementsByTagName("path");    // paths in last twist 
+                g2Paths = g2.getElementsByTagName("path");    // paths in second-last twist
+                g3Paths = g3.getElementsByTagName("path");    // paths in third-last twist
+                g4Paths = g4.getElementsByTagName("path");    // paths in fourth-last twist
+                g5Paths = g5.getElementsByTagName("path");    // paths in fifth-last twist
+                
+                g1.setAttribute("id","g1");
+                g2.setAttribute("id","g2");
+                g3.setAttribute("id","g3");
+                g4.setAttribute("id","g4");
+                g5.setAttribute("id","g5");
+                
+            }
+            
+            function animSwap (idPathA,idPathB,duration) {
+                
+                dA = idPathA.getAttribute("d");
+                dB = idPathB.getAttribute("d");
+                
+                newAnim = document.createElementNS("http://www.w3.org/2000/svg","animate");
+                //newAnim.setAttribute("xlink:href","#"+idPathA.getAttribute("id"));
+                newAnim.setAttribute("attributeType","XML");
+                newAnim.setAttribute("attributeName","d");
+                newAnim.setAttribute("from",dA);
+                newAnim.setAttribute("to",dB);
+                newAnim.setAttribute("dur",duration+"ms");
+                newAnim.setAttribute("fill","freeze");
+                idPathA.appendChild(newAnim);
+                
+                newAnim = document.createElementNS("http://www.w3.org/2000/svg","animate");
+                //newAnim.setAttribute("xlink:href","#"+idPathB.getAttribute("id"));
+                newAnim.setAttribute("attributeType","XML");
+                newAnim.setAttribute("attributeName","d");
+                newAnim.setAttribute("from",dB);
+                newAnim.setAttribute("to",dA);
+                newAnim.setAttribute("dur",duration+"ms");
+                newAnim.setAttribute("fill","freeze");
+                idPathB.appendChild(newAnim);
+                
+            }            
+            
+            function animTwist (idPathA,idPathB,duration) {
+                
+                // NB: right now, set to append inside paths, not inside idSVG
+                
+                if (idPathA.parentNode!=idPathB.parentNode) {
+                    console.log("animTwist: idPathA and idPathB are not siblings");
+                    alert("animTwist: idPathA and idPathB are not siblings");
+                    return;
+                }
+                
+                a0 = firstPoint(idPathA).map(Number);
+                a1 = lastPoint(idPathA).map(Number);
+                b0 = firstPoint(idPathB).map(Number);
+                b1 = lastPoint(idPathB).map(Number);
+                
+                aD0 = "M "+a0[0]+","+a0[1]+" C "+(a0[0]+bX)+","+a0[1]+" "+(a1[0]-bX)+","+a1[1]+" "+a1[0]+","+a1[1];
+                aD1 = "M "+a0[0]+","+a0[1]+" C "+(a0[0]+bX)+","+a0[1]+" "+(b1[0]-bX)+","+b1[1]+" "+b1[0]+","+b1[1];
+                bD0 = "M "+b0[0]+","+b0[1]+" C "+(b0[0]+bX)+","+b0[1]+" "+(b1[0]-bX)+","+b1[1]+" "+b1[0]+","+b1[1];
+                bD1 = "M "+b0[0]+","+b0[1]+" C "+(b0[0]+bX)+","+b0[1]+" "+(a1[0]-bX)+","+a1[1]+" "+a1[0]+","+a1[1];
+                
+                newAnim = document.createElementNS("http://www.w3.org/2000/svg","animate");
+                //newAnim.setAttribute("xlink:href","#"+idPathA.getAttribute("id"));
+                newAnim.setAttribute("attributeName","d");
+                newAnim.setAttribute("attributeType","XML");
+                newAnim.setAttribute("from",aD0);
+                newAnim.setAttribute("to",aD1);
+                newAnim.setAttribute("dur",duration+"ms");
+                newAnim.setAttribute("fill","freeze");
+                idPathA.appendChild(newAnim);
+                
+                newAnim = document.createElementNS("http://www.w3.org/2000/svg","animate");
+                //newAnim.setAttribute("xlink:href","#"+idPathB.getAttribute("id"));
+                newAnim.setAttribute("attributeName","d");
+                newAnim.setAttribute("attributeType","XML");
+                newAnim.setAttribute("from",bD0);
+                newAnim.setAttribute("to",bD1);
+                newAnim.setAttribute("dur",duration+"ms");
+                newAnim.setAttribute("fill","freeze");
+                idPathB.appendChild(newAnim);
+                
+            }
+            
+            function animScrollText (distance) {
+                
+                // slide the button text so it appears stationary in user view
+                
+                for (i=0; i<buttonLabels.length; i++) {
+                    
+                    theText = svgFull.getElementById("bText"+i);
+                    currentX = theText.getAttribute("x");
+                    
+                    newAnim = document.createElementNS("http://www.w3.org/2000/svg","animate");
+                    newAnim.setAttribute("attributeName","x");
+                    newAnim.setAttribute("attributeType","XML");
+                    newAnim.setAttribute("from",currentX);
+                    newAnim.setAttribute("to",Number(currentX)+Number(distance));
+                    newAnim.setAttribute("dur",dur+"ms");
+                    newAnim.setAttribute("fill","freeze");
+                    theText.appendChild(newAnim);
+                    
+                }
+                
+            }
+            
+            // Animate svgFull to the left by grX (updates background rectangle, too)
+            function animScrollBraid (idMoveMe,distance,duration) {
+                
+                currentVB = idMoveMe.getAttribute("viewBox");
+                vB = currentVB.split(" ").map(Number);
+                d = Number(distance);
+                
+                newAnim = document.createElementNS("http://www.w3.org/2000/svg","animate");
+                newAnim.setAttribute("attributeName","viewBox");
+                newAnim.setAttribute("attributeType","XML");
+                newAnim.setAttribute("from",currentVB);
+                newAnim.setAttribute("to",(vB[0]+d)+" "+vB[1]+" "+vB[2]+" "+vB[3]);
+                newAnim.setAttribute("dur",duration+"ms");
+                newAnim.setAttribute("fill","freeze");
+                idMoveMe.appendChild(newAnim);
+                
+                // move the background rectangle over so it still covers the whole viewBox
+                
+                currentX = Number(svgBackground.getAttribute("x"));
+                svgBackground.setAttribute("x",currentX+grX);
+
+            }
+            
+            function removeLeft () {
+                
+                deleteMe = svgFull.getElementsByClassName("twistGp")[0];
+                svgFull.removeChild(deleteMe);
+                
+            }
+            
+            function extendRight () {
+                
+                // get relevant info from previous group of paths
+                
+                tGps = svgFull.getElementsByClassName("twistGp");
+                lastTwist = tGps[tGps.length-1];
+                lastPaths = lastTwist.getElementsByTagName("path");
+                x = Number(lastPoint(lastPaths[0])[0]);
+                
+                // make a group to hold paths of the new trivial twist
+                
+                newGp = document.createElementNS("http://www.w3.org/2000/svg","g");
+                newGp.setAttribute("class","twistGp");
+                //newGp.setAttribute("fill","none");
+                
+                // populate the new group with paths matching previous group colors
+                
+                for (i=0; i<lastPaths.length; i++) {
+                    
+                    y = Number(lastPoint(lastPaths[i])[1]); // height of this new path
+                    
+                    newPath = document.createElementNS("http://www.w3.org/2000/svg","path");
+                    
+                    newPath.setAttribute("class",lastPaths[i].getAttribute("class"));
+                    //newPath.setAttribute("stroke",lastPaths[i].getAttribute("stroke"));
+                    //newPath.setAttribute("stroke-width",lastPaths[i].getAttribute("stroke-width"));
+                    newPath.setAttribute("d","M "+x+","+y+" L "+(x+grX)+","+y);
+                    
+                    newGp.appendChild(newPath);
+                    
+                }
+                
+                svgFull.appendChild(newGp);
+                
+            }
+            
+            function reloadDammit () {
+            
+                x = svgFull.innerHTML;
+                svgFull.innerHTML = x;
+            
+            }
+            
+            function makePassive (x) {              // always include sActive in x
+                
+                y = document.getElementsByClassName(x);
+                
+                for (i=0; i<y.length; i+=0) {
+                    zzz = y[i].getAttribute("class");               // e.g. "s2 sMain sActive"
+                    zz = zzz.substring(0,zzz.lastIndexOf(" "));     // e.g. "s2 sMain"
+                    y[i].setAttribute("class",zz+" sPassive");      // e.g. "s2 sMain sPassive"
+                }
+            }
+
+            function makeActive (x) {               // always include sPassive in x
+                
+                y = document.getElementsByClassName(x);
+                
+                for (i=0; i<y.length; i+=0) {
+                    zzz = y[i].getAttribute("class");               // e.g. "s2 sMain sPassive"
+                    zz = zzz.substring(0,zzz.lastIndexOf(" "));     // e.g. "s2 sMain"
+                    y[i].setAttribute("class",zz+" sActive");      // e.g. "s2 sMain sActive"
+                }
+            }
+            
+            function unMarkEm () {
+                
+//                 for (j=0; j<5; j++) {
+//                 
+//                     setTimeout(function(){
+//                         gJ = document.getElementById("g"+(j+1));
+//                         gJ.removeAttribute("id");
+//                     },0*j);
+//                                                     // XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//                 }
+                    g1.removeAttribute("id");
+                    g2.removeAttribute("id");
+                    g3.removeAttribute("id");
+                    g4.removeAttribute("id");
+                    g5.removeAttribute("id");
+                    
+            }
+            
+            function activeArcsFirst (K,sign) {
+				
+				sign = sign || "pos";
+                
+                // initial y-value for over and under arcs
+                
+                yUpper = y0+K*grY;
+                yLower = y0+(K+1)*grY; 
+                
+                if (sign=="pos") {
+                    
+                    yOver = yUpper;
+                    yUnder = yLower;
+                    
+                } else if (sign=="neg") {
+                    
+                    yOver = yLower;
+                    yUnder = yUpper;
+                    
+                } else {
+                    
+                    console.log("second argument of activeArcsFirst should be 'pos' or 'neg'");
+                    
+                }
+                
+                // identify over and under strands by class name
+                
+                for (i=0; i<g5.getElementsByTagName("path").length; i++) {
+                    
+                    if (firstPoint(g5.getElementsByTagName("path")[i])[1]==yOver) {
+                        
+                        overClassFull = g5.getElementsByTagName("path")[i].getAttribute("class");
+                        overStrand = overClassFull.substring(0,overClassFull.indexOf(" "));
+                    
+                    } else if (firstPoint(g5.getElementsByTagName("path")[i])[1]==yUnder) {
+
+                        underClassFull = g5.getElementsByTagName("path")[i].getAttribute("class");
+                        underStrand = underClassFull.substring(0,underClassFull.indexOf(" "));
+                    
+                    }
+                }
+                
+                // move acvite arcs to beginning of g1,..,g5 
+                // order will be (under-out, under-main, over-out, over-main, ... )
+
+                    
+                    // same thing five times...
+                    
+//                     for (j=0; j<5; j++) {          // for loop messes up the timing, breaks the braid!
+//                                                    // not fixable with single setTimeout inside loop, might be fixable with several...
+//                         setTimeout(function(){
+//                             gJ = document.getElementById("g"+(5-j));
+//                             underOut = gJ.getElementsByClassName(underStrand+" sOutline")[0];
+//                             underMain = gJ.getElementsByClassName(underStrand+" sMain")[0];
+//                             overOut = gJ.getElementsByClassName(overStrand+" sOutline")[0];
+//                             overMain = gJ.getElementsByClassName(overStrand+" sMain")[0];
+//                         },60*j);
+//                         setTimeout(function(){
+//                             gJ.insertBefore(overMain,gJ.firstChild);
+//                             gJ.insertBefore(overOut,gJ.firstChild);
+//                             gJ.insertBefore(underMain,gJ.firstChild);
+//                             gJ.insertBefore(underOut,gJ.firstChild);
+//                         },60*j+0);
+//                                
+//                     }
+                    
+                    
+                    
+                    underOut = g5.getElementsByClassName(underStrand+" sOutline")[0];
+                    underMain = g5.getElementsByClassName(underStrand+" sMain")[0];
+                    overOut = g5.getElementsByClassName(overStrand+" sOutline")[0];
+                    overMain = g5.getElementsByClassName(overStrand+" sMain")[0];
+                    g5.insertBefore(overMain,g5.firstChild);
+                    g5.insertBefore(overOut,g5.firstChild);
+                    g5.insertBefore(underMain,g5.firstChild);
+                    g5.insertBefore(underOut,g5.firstChild);
+                    
+                    underOut = g4.getElementsByClassName(underStrand+" sOutline")[0];
+                    underMain = g4.getElementsByClassName(underStrand+" sMain")[0];
+                    overOut = g4.getElementsByClassName(overStrand+" sOutline")[0];
+                    overMain = g4.getElementsByClassName(overStrand+" sMain")[0];
+                    g4.insertBefore(overMain,g4.firstChild);
+                    g4.insertBefore(overOut,g4.firstChild);
+                    g4.insertBefore(underMain,g4.firstChild);
+                    g4.insertBefore(underOut,g4.firstChild);
+                    
+                    underOut = g3.getElementsByClassName(underStrand+" sOutline")[0];
+                    underMain = g3.getElementsByClassName(underStrand+" sMain")[0];
+                    overOut = g3.getElementsByClassName(overStrand+" sOutline")[0];
+                    overMain = g3.getElementsByClassName(overStrand+" sMain")[0];
+                    g3.insertBefore(overMain,g3.firstChild);
+                    g3.insertBefore(overOut,g3.firstChild);
+                    g3.insertBefore(underMain,g3.firstChild);
+                    g3.insertBefore(underOut,g3.firstChild);
+                    
+                    
+                    underOut = g2.getElementsByClassName(underStrand+" sOutline")[0];
+                    underMain = g2.getElementsByClassName(underStrand+" sMain")[0];
+                    overOut = g2.getElementsByClassName(overStrand+" sOutline")[0];
+                    overMain = g2.getElementsByClassName(overStrand+" sMain")[0];
+                    g2.insertBefore(overMain,g2.firstChild);
+                    g2.insertBefore(overOut,g2.firstChild);
+                    g2.insertBefore(underMain,g2.firstChild);
+                    g2.insertBefore(underOut,g2.firstChild);
+                    
+                    
+                    underOut = g1.getElementsByClassName(underStrand+" sOutline")[0];
+                    underMain = g1.getElementsByClassName(underStrand+" sMain")[0];
+                    overOut = g1.getElementsByClassName(overStrand+" sOutline")[0];
+                    overMain = g1.getElementsByClassName(overStrand+" sMain")[0];
+                    g1.insertBefore(overMain,g1.firstChild);
+                    g1.insertBefore(overOut,g1.firstChild);
+                    g1.insertBefore(underMain,g1.firstChild);
+                    g1.insertBefore(underOut,g1.firstChild);
+                
+            }
+            
+            function animG5 () {
+                
+                animTwist(g5Paths[0],g5Paths[2],dur);
+                animTwist(g5Paths[1],g5Paths[3],dur);
+                
+            }
+            
+            function animG4 () {
+                
+                animSwap(g4Paths[0],g4Paths[2],dur);
+                animSwap(g4Paths[1],g4Paths[3],dur);
+                
+            }
+            
+            function animG3 () {
+                
+                animSwap(g3Paths[0],g3Paths[2],dur);
+                animSwap(g3Paths[1],g3Paths[3],dur);
+                
+            }
+            
+            function animG2 () {
+                
+                animSwap(g2Paths[0],g2Paths[2],dur);
+                animSwap(g2Paths[1],g2Paths[3],dur);
+            
+            }
+            
+            function animG1 () {
+                
+                animSwap(g1Paths[0],g1Paths[2],dur);
+                animSwap(g1Paths[1],g1Paths[3],dur);
+            
+            }
+            
+            function animGps() {
+                
+                animG5();
+                animG4();
+                animG3();
+                animG2();
+                animG1();
+                
+            }
+            
+            function animScroller () {
+            
+                animScrollBraid(svgFull,grX,dur);
+                animScrollText(grX);
+            
+            }
+            
+            function unAnim () {
+                
+                anims = document.getElementsByTagName("animate");
+                
+                while (anims[0]) {
+                
+                    theParent = anims[0].parentNode;
+                    theAttribute = anims[0].getAttribute("attributeName");
+                    theValue = anims[0].getAttribute("to");
+                    
+                    theParent.removeChild(anims[0]);
+                    theParent.setAttribute(theAttribute,theValue);
+                    
+                }
+            }
+                
+            function bump (theDiv) {
+                
+                x = theDiv.innerHTML;
+                theDiv.innerHTML = x;
+                
+            }
+            
+            function updateActivePassive (K) {      
+            
+                // this bit is redundant with activeArcsFirst
+                yUpper = y0+K*grY;
+                yLower = y0+(K+1)*grY; 
+                
+                yO = yUpper;     // THIS WILL MAKE POSITIVE TWIST BY DEFAULT
+                yU = yLower;    // to include negative twist option, add code HERE !!
+                
+                // identify over and under strands by class name
+                
+                for (i=0; i<g1.getElementsByTagName("path").length; i++) {
+                    
+                    if (lastPoint(g1.getElementsByTagName("path")[i])[1]==yO) {
+                        
+                        overClassFull = g1.getElementsByTagName("path")[i].getAttribute("class");
+                        overStrand = overClassFull.substring(0,overClassFull.indexOf(" "));
+                    
+                    } else if (lastPoint(g1.getElementsByTagName("path")[i])[1]==yU) {
+
+                        underClassFull = g1.getElementsByTagName("path")[i].getAttribute("class");
+                        underStrand = underClassFull.substring(0,underClassFull.indexOf(" "));
+                    
+                    }
+                }
+                
+                makePassive("sActive");
+                makeActive(overStrand+" sPassive");
+                makeActive(underStrand+" sPassive");
+                
+                // update the buttons too
+                
+//                 svgFull.getElementsByClassName("bActive")[0].setAttribute("class","bPassive");
+                svgFull.getElementById("bText"+K).setAttribute("class","bActive");
+                
+                // update the active colors for styling the content divs
+                
+                
+
+                
+            }
+            
+            function newTwist (k,sign) {
+				
+				sign = sign || "pos";
+                
+                if (k<0 || k>buttonLabels.length+1) {
+                    console.log("illegal twist number; must be between 0 and number of strands");
+                } else {
+                
+                    unAnim();
+                    
+                    setTimeout(function(){
+                    
+                        svgFull.getElementsByClassName("bActive")[0].setAttribute("class","bPassive");
+                        
+                    }, 0);
+                    
+                    
+                    setTimeout(function(){
+                    
+                        extendRight();
+                        markEm();
+                        updateActivePassive(k);
+                        activeArcsFirst(k,sign);     // NEED DELAY after activeArcsFirst 
+                        
+                    }, 5);
+                    
+                    setTimeout(function(){
+                        
+                        animScroller();
+                        animGps();
+                        
+//                         theImages = document.querySelectorAll(".imageRight");
+//                         for (i=0; i<theImages.length; i++) {
+//                             theImages[i].style.border = "solid "+colors[getActives()[0]];
+//                             theImages[i].style.borderwidth = "0px 6px";            // borderwidth doesn't work
+//                         }
+                        
+                    },10);
+                    
+//                     setTimeout(function(){
+//                         
+//                         getActiveColors();
+//                         
+//                     },100);
+                    
+                    setTimeout(function(){
+                        
+                        removeLeft();
+                        
+                    },400);
+                    
+                    bump(divNavBar);     // this removes event listeners inside this div
+                                         // (buttons listeners are attached to document, not the div)
+
+                }
+                
+            }
+            
+            function resetDivMain () {
+                
+                x = document.getElementById("divMain");
+                h = window.innerHeight-280;                     // 280px hard-wired in here, maybe fix that later...
+                x.setAttribute("style","max-height:"+h+"px");
+                
+//                if (window.innerHeight>900) {					// same with 900 here
+//					x.setAttribute("style","overflow-y: auto;");
+//				}
+				//toggleSmallScreen();
+            }
+            
+            function toggleSmallScreen () {			// now included into resetDivMain()
+				
+				if (window.innerWidth<400) {
+					imRights = document.getElementsByClassName("imageRight");
+					for (i=0; i<imRights.length; i++) {
+						x = imRights[i];
+						x.setAttribute("style","margin-left: auto; margin-right: auto;");
+					}
+				} else {
+					imRights = document.getElementsByClassName("imageRight");
+					for (i=0; i<imRights.length; i++) {
+						x = imRights[i];
+						x.setAttribute("style","float:right; margin-left:50px; margin-right: 0px;");
+					}
+				}
+			}
+            
+            function clickSign (event) {
+            
+                if (event.shiftKey) {
+                    return "neg"
+                } else {
+                    return "pos"
+                } 
+            }
+            
+            function hideDiv (divID) {
+                
+                div = document.getElementById(divID);
+                div.style.display = "none";
+                
+            }
+            
+            function showDiv (divID) {
+                
+                div = document.getElementById(divID);
+                div.style.display = "block";
+                
+            }
+                        
+            function getActiveColors () {        // used if colorSwap=true
+                
+                actives = g1.getElementsByClassName("sActive sMain");
+                act0 = actives[0].getAttribute("class").substring(1,actives[0].getAttribute("class").indexOf(" "));
+                act1 = actives[1].getAttribute("class").substring(1,actives[1].getAttribute("class").indexOf(" "));
+                
+//                 return [act0,act1]
+                
+            }
+            
+            function updateImage(targetID,imagePath) {
+            
+                document.getElementById(targetID).setAttribute("src",imagePath)
+            
+            }
+            /*
+            function updateBorder(contentDivNumber,newColor) {      THIS IS NOT COMPLETE BUT HERE IS WHAT TO USE
+                
+                im = document.getElementById("im"+           ...  )
+                im.style.border = strandColors[Number(act0)]          ....this requires getActiveColors first ...
+                im.style.borderWidth = "0px 6px"
+                
+            }*/
+            
+            function toggleScroll() {
+                
+                singleScroll = !singleScroll;
+//                 bump(divMainContainer);
+                if (singleScroll == true) {
+                    for (i=0;i<buttonLabels.length;i++) {showDiv("content"+i);}
+                    x = document.getElementById("scrollOrNot");
+                    x.innerHTML = "separate panels";
+                } else {
+                    showDiv("content0");
+                    for (i=1;i<buttonLabels.length;i++) {hideDiv("content"+i);}
+                    x = document.getElementById("scrollOrNot");
+                    x.innerHTML = "single scroll display";
+                }
+                
+            }
+    
+            document.addEventListener("keydown", function(event) {  // keyboard toggle
+                
+                if ((event.ctrlKey && event.altKey) && event.keyCode==75) {
+                    
+                    keyboardOn = !keyboardOn;
+                    if (keyboardOn==false) {alert("keys off")}
+                    else {alert("keys on")}
+                    
+                }
+                
+                if ((event.ctrlKey && event.altKey) && event.keyCode==67) {
+                    
+                    if (showControls) {showDiv("divControls"); showControls = !showControls}
+                    else {hideDiv("divControls"); showControls = !showControls}
+                    
+                }
+                
+            });
+            
+            document.addEventListener("keydown", function(event) {  // signed keyboard input
+                
+                if (keyboardOn && 64<event.keyCode && event.keyCode<91) {
+                    
+                    if (event.shiftKey) {
+                        
+                        console.log("shift "+event.keyCode);
+                        newTwist(event.keyCode-65,"neg");
+                        
+                    } else {
+                    
+                        console.log(event.keyCode);
+                        newTwist(event.keyCode-65);
+                    }
+                }
+            });
+        
+            document.addEventListener("click",function(event) { // signed button click
+            
+                for (i=0; i<buttonLabels.length; i++) {
+                    
+                    if (event.target.getAttribute("id")=="bText"+i) {
+                        
+                        newTwist(i,clickSign(event));
+                        
+                        if (singleScroll==true) {
+                        
+                            document.getElementById("content"+i).scrollIntoView();
+                        
+                        } else {
+                            
+                            showDiv("content"+i);
+                            
+                            for (j=0; j<buttonLabels.length; j++) {
+                                if (j!=i) {hideDiv("content"+j);}
+                            }
+                        }
+                        
+                    }
+                    
+                    // update the border color on .imageRight IF colorSwap=true
+                    
+                    if (colorSwap==true) {
+                        setTimeout(function(){
+                        getActiveColors();
+                        allImRights = document.getElementsByClassName("imageRight");
+                        for (k=0; k<allImRights.length; k++) {
+                            x = allImRights[k];
+                            x.setAttribute("style","border: solid "+strandColors[act0]+"; border-width: 0px 6px;");
+                        }
+                        }, 20);
+                    }
+                }
+            });
+            
+        </script>
+
+    </body>
+
+</html>
